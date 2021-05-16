@@ -77,7 +77,7 @@ class MyStreamListener(tweepy.StreamListener):
             stop_loss = (((doge_price['bid']) * .01) - doge_price['bid'])
             # place the market order
             try:
-                buy_order = client.create_order(symbol='DOGEUSDT', side='BUY', type='MARKET', quantity=portion_balance)
+                buy_order = client.futures_create_order(symbol='DOGEUSDT', side='BUY', type='MARKET', quantity=portion_balance)
                 print('Order sucessfully placed' buy_order)
             except BinanceAPIException as e:
                 # error handling
@@ -87,11 +87,11 @@ class MyStreamListener(tweepy.StreamListener):
                 print(e)
             #send alert about the order    
             send_alert('fork-elon alert!', 'Elon tweeted about dogecoin at {0}! Bought' buy_order['executedQty'] .format(str(datetime.now())))
-            # Have stop loss waiting listener and execution
+            # Have stop loss just in case of dumbass dumping on his shitcoin
             if order_id != 'error'
                 while not doge_price['last'] <= stop_loss:
                     try:
-                        sell_order = client.create_oco_order(symbol='DOGEUSDT', side='SELL', type='MARKET', quantity=buy_order['executedQty'], stopPrice=stop_loss, stopLimitPrice=stop_loss)
+                        sell_order = client.futures_create_oco_order(symbol='DOGEUSDT', side='SELL', type='MARKET', quantity=buy_order['executedQty'], stopPrice=stop_loss, stopLimitPrice=stop_loss)
                     
                     except BinanceAPIException as e:
                     # error handling
